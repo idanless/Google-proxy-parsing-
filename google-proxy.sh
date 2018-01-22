@@ -17,12 +17,15 @@ echo 100 >google.log
 #check response + google
 test=$(curl -s --max-time 10 -o google.log -i  http://maps.googleapis.com/maps/api/geocode/json?latlng=34.007834,35.649314 --proxy $ip;cat google.log|grep HTTP|cut -d ' ' -f2| head -n1)
 res=$(curl -m 11 -s http://maps.googleapis.com/maps/api/geocode/json?latlng=34.007834,35.649314  --proxy $ip  -w %{time_total}\\n -o /dev/null |cut -d '.' -f1)
+
 if [ "$test" = "200" ]
 then
    echo "ok found 200"
     if [ "$res" -lt 10 ]
     then
        echo "response ok"
+       #if pass response and google
+       #put in file all the ip
        echo $ip >>google.txt
     else
         echo "google not work"
